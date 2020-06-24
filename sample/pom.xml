@@ -43,6 +43,27 @@
             <artifactId>maven-plugin-api</artifactId>
             <version>3.6.3</version>
         </dependency>
+        <!-- https://cucumber.io/docs/installation/java/ -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java8</artifactId>
+            <version>6.1.1</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/info.cukes/gherkin -->
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>gherkin</artifactId>
+            <version>2.12.2</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 
