@@ -8,3 +8,5 @@
 7. Added feature file and step definition
 8. Ran the first test case successfully.
 9. Parameterized the inputs.
+10. Jenkins localhost installed and it's up and running.
+11. Added maven project and configured polling for automated build cycle.
