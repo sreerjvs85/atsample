@@ -1,5 +1,6 @@
 package at.pages;
 
+import at.commonLibrary.Helper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -7,7 +8,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 public class LoginPageObjects {
-    WebDriver driver;
+    public WebDriver driver;
 
     public LoginPageObjects(WebDriver driver) {
         this.driver = driver;
@@ -27,13 +28,13 @@ public class LoginPageObjects {
     WebElement txtErrorMessage;
 
     public void setTxtUsername (String username) {
-        txtUsername.sendKeys(username);
+        Helper.waitForElement(driver,txtUsername).sendKeys(username);
     }
     public void setTxtPassword (String password) {
-        txtPassword.sendKeys(password);
+        Helper.waitForElement(driver, txtPassword).sendKeys(password);
     }
     public void clickBtnSubmit() {
-        btnSubmit.click();
+        Helper.waitForElement(driver, btnSubmit).click();
     }
     public String getTxtErrorMessage() {
         try {

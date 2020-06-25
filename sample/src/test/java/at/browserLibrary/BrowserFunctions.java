@@ -6,10 +6,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class BrowserFunctions {
 
     private static WebDriver driver;
-    private String lBrowser;
-    private String chromePath = "../../resources/chromedriver";
+    private static String lBrowser;
+    private static String chromePath = "src/test/resources/chromedriver";
 
-    public WebDriver getDriver(String browser, String URL) {
+    public static WebDriver getDriver(String browser, String URL) {
         lBrowser = browser;
         setlBrowser(lBrowser);
         driver.manage().window().maximize();
@@ -17,7 +17,7 @@ public class BrowserFunctions {
         return driver;
     }
 
-    private void setlBrowser (String browser) {
+    private static void setlBrowser (String browser) {
         if (browser.contains("chrome")) {
             System.setProperty("webdriver.chrome.driver",chromePath);
             driver = new ChromeDriver();

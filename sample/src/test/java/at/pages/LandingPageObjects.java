@@ -1,5 +1,6 @@
 package at.pages;
 
+import at.commonLibrary.Helper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,7 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 
 public class LandingPageObjects {
 
-    WebDriver driver;
+    public WebDriver driver;
 
     public LandingPageObjects (WebDriver driver) {
         this.driver = driver;
