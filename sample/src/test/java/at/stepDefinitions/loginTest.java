@@ -3,6 +3,7 @@ package at.stepDefinitions;
 import at.browserLibrary.BrowserFunctions;
 import at.pages.LandingPageObjects;
 import at.pages.LoginPageObjects;
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -25,7 +26,7 @@ public class loginTest {
     }
 
     @When("I enter username, password and submit")
-    public void iEnterUsernamePasswordAndSubmit() {
+    public void iEnterUsernamePasswordAndSubmit() throws InterruptedException {
         loginPageObjects.setTxtUsername("sreerjvs@gmail.com");
         loginPageObjects.setTxtPassword("sreerjvs85");
         loginPageObjects.clickBtnSubmit();
@@ -36,4 +37,9 @@ public class loginTest {
         errorMessage = loginPageObjects.getTxtErrorMessage();
         System.out.println(errorMessage);
     }
+    @After
+    public void quitDriver() {
+        driver.quit();
+    }
+
 }
