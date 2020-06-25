@@ -42,4 +42,10 @@ public class loginTest {
         driver.quit();
     }
 
+    @When("I enter username {string}, password {string} and submit")
+    public void iEnterUsernamePasswordAndSubmit(String user, String pass) throws InterruptedException {
+        loginPageObjects.setTxtUsername(user);
+        loginPageObjects.setTxtPassword(pass);
+        loginPageObjects.clickBtnSubmit();
+    }
 }
