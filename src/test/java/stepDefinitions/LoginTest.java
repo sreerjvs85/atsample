@@ -25,13 +25,6 @@ public class LoginTest {
         loginPageObjects = new LandingPageObjects(driver).clickLinkLogin();
     }
 
-    @When("I enter username, password and submit")
-    public void iEnterUsernamePasswordAndSubmit() throws InterruptedException {
-        loginPageObjects.setTxtUsername("sreerjvs@gmail.com");
-        loginPageObjects.setTxtPassword("sreerjvs85");
-        loginPageObjects.clickBtnSubmit();
-    }
-
     @Then("If i get error message, capture it.")
     public void ifIGetErrorMessageCaptureIt() {
         errorMessage = loginPageObjects.getTxtErrorMessage();

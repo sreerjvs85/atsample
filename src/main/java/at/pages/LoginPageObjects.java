@@ -43,12 +43,18 @@ public class LoginPageObjects {
 //        Helper.waitForElement(driver, btnSubmit).click();
     }
     public String getTxtErrorMessage() {
-        try {
-            return txtErrorMessage.getText();
-        } catch (Exception e) {
-            return e.getMessage();
+       if (isTxtErrorMessageVisible()) {
+           return txtErrorMessage.getText();
+       } else {
+           return new Exception().getMessage();
+       }
+    }
+    public boolean isTxtErrorMessageVisible(){
+        if (!txtErrorMessage.isDisplayed()){
+            return false;
+        } else {
+            return true;
         }
     }
-
 
 }
