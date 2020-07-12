@@ -17,7 +17,7 @@ public class LoginTest {
 
     @Before
     public void openATAndClickLogin() {
-        driver = BrowserFunctions.getDriver("chrome", "https://at.govt.nz/");
+        driver = BrowserFunctions.getDriver("firefox", "https://at.govt.nz/");
     }
 
     @Given("I'm on login screen of at")
