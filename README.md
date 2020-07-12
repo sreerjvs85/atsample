@@ -11,3 +11,4 @@
 10. Jenkins localhost installed and it's up and running.
 11. Added maven project and configured polling for automated build cycle.
 12. Added json format and generated cucumber reports to jenkin.
+13. Added firefox gecko support
