@@ -21,18 +21,20 @@ public class LoginTest {
 
     @After
     public void quitDriver() {
+        System.out.println("After method - Thread Id "+ Thread.currentThread().getId());
         driver.quit();
     }
 
-    @Given("I'm on login screen of at")
-    public void iMOnLoginScreenOfAt() {
-        loginPageObjects = new LandingPageObjects(driver).clickLinkLogin();
-    }
+//    @Given("I'm on login screen of at")
+//    public void iMOnLoginScreenOfAt() {
+//        loginPageObjects = new LandingPageObjects(driver).clickLinkLogin();
+//    }
 
     @Then("If i get error message, capture it.")
     public void ifIGetErrorMessageCaptureIt() {
         errorMessage = loginPageObjects.getTxtErrorMessage();
         System.out.println(errorMessage);
+        System.out.println("Then method - Thread Id "+ Thread.currentThread().getId());
     }
 
     @When("I enter username {string}, password {string} and submit")
@@ -40,13 +42,13 @@ public class LoginTest {
         loginPageObjects.setTxtUsername(user);
         loginPageObjects.setTxtPassword(pass);
         loginPageObjects.clickBtnSubmit();
+        System.out.println("When method - Thread Id "+ Thread.currentThread().getId());
     }
 
     @Given("I'm on login screen of at using {string}")
     public void iMOnLoginScreenOfAtUsing(String browser) {
         driver = BrowserFunctions.getDriver(browser, "https://at.govt.nz/");
         loginPageObjects = new LandingPageObjects(driver).clickLinkLogin();
-        System.out.format("Thread ID - %2d - %s from %s feature file.\n",
-                Thread.currentThread().getId(),Thread.currentThread().getName(),Thread.currentThread().getContextClassLoader());
+        System.out.println("Given method - Thread Id "+ Thread.currentThread().getId());
     }
 }
