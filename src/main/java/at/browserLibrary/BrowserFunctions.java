@@ -6,7 +6,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class BrowserFunctions {
 
-    private static WebDriver driver;
+    public static WebDriver driver;
     private static String lBrowser;
     private static String chromePath = "src/test/resources/chromedriver";
     private static String firefoxPath = "src/test/resources/geckodriver";

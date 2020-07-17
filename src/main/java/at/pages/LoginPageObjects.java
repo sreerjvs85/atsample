@@ -1,11 +1,14 @@
 package at.pages;
 
+import at.commonLibrary.WebelementFunctions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
+
+import java.io.IOException;
 
 public class LoginPageObjects {
     public WebDriver driver;
@@ -27,34 +30,16 @@ public class LoginPageObjects {
     @FindBy (how = How.CLASS_NAME, using = "loginErrMsg")
     WebElement txtErrorMessage;
 
-    public void setTxtUsername (String username) throws InterruptedException {
-//        Thread.sleep(3000);
-        txtUsername.sendKeys(username);
-//        Helper.waitForElement(driver,txtUsername).sendKeys(username);
+    public void setTxtUsername (String username) throws IOException {
+        WebelementFunctions.fillField(txtUsername, username);
     }
-    public void setTxtPassword (String password) throws InterruptedException {
-//        Thread.sleep(3000);
-        txtPassword.sendKeys(password);
-//        Helper.waitForElement(driver, txtPassword).sendKeys(password);
+    public void setTxtPassword (String password) throws IOException {
+        WebelementFunctions.fillField(txtPassword,password);
     }
-    public void clickBtnSubmit() throws InterruptedException {
-//        Thread.sleep(3000);
-        btnSubmit.click();
-//        Helper.waitForElement(driver, btnSubmit).click();
+    public void clickBtnSubmit() throws IOException {
+        WebelementFunctions.click(btnSubmit);
     }
-    public String getTxtErrorMessage() {
-       if (isTxtErrorMessageVisible()) {
-           return txtErrorMessage.getText();
-       } else {
-           return new Exception().getMessage();
-       }
+    public String getTxtErrorMessage() throws IOException {
+       return WebelementFunctions.getMessage(txtErrorMessage);
     }
-    public boolean isTxtErrorMessageVisible(){
-        if (!txtErrorMessage.isDisplayed()){
-            return false;
-        } else {
-            return true;
-        }
-    }
-
 }
