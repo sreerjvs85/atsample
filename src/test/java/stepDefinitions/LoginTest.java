@@ -32,6 +32,7 @@ public class LoginTest {
 
     @Then("If i get error message, capture it.")
     public void ifIGetErrorMessageCaptureIt() throws IOException {
+
         errorMessage = loginPageObjects.getTxtErrorMessage();
     }
 
