@@ -9,7 +9,7 @@ import io.cucumber.testng.CucumberOptions;
         features = {"src/test/resources/features"},
         plugin = {"json:target/report.json"},
         glue = {"stepDefinitions"},
-        tags = "@RegressionTest"
+        tags = "@New"
 )
 public class RunTest extends AbstractTestNGCucumberTests {
 

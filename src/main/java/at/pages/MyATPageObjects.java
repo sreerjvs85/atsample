@@ -1,6 +1,6 @@
 package at.pages;
 
-import at.commonLibrary.WebelementFunctions;
+import at.commonLibrary.WebElementFunctions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -18,7 +18,7 @@ public class MyATPageObjects {
         PageFactory.initElements(new AjaxElementLocatorFactory(driver,30),this);
     }
 
-    @FindBy (how = How.CLASS_NAME, using = "default-hop-balance")
+    @FindBy (how = How.XPATH, using = "//span[@class='default-hop-balance']")
     WebElement txtMyAtBalance;
 
     @FindBy(how = How.LINK_TEXT, using = "Log out")
@@ -33,7 +33,22 @@ public class MyATPageObjects {
     @FindBy(how = How.ID, using = "default-hop-balance-remaining")
     WebElement txtDefaultAtBalance;
 
-    public String getWelcomeMessage(WebElement ele) throws IOException {
-        return WebelementFunctions.getMessage(txtWelcomeMessage);
+    public String getWelcomeMessage() throws IOException {
+        return WebElementFunctions.getMessage(txtWelcomeMessage);
     }
+
+    public String getMyAtBalance () throws  IOException {
+        return WebElementFunctions.getMessage(txtMyAtBalance);
+    }
+    public String getDefaultAtBalance () throws  IOException {
+        return WebElementFunctions.getMessage(txtDefaultAtBalance);
+    }
+    public void clickLinkLogout() throws IOException {
+        WebElementFunctions.click(lnkLogout);
+    }
+    public MyTransactionsPageObjects clickBtnViewTransactions() throws IOException {
+        WebElementFunctions.click(btnViewTransactions);
+        return new MyTransactionsPageObjects(driver);
+    }
+
 }

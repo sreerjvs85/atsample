@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import java.io.IOException;
+
 public class BrowserFunctions {
 
     public static WebDriver driver;
@@ -27,5 +29,9 @@ public class BrowserFunctions {
             System.setProperty("webdriver.gecko.driver",firefoxPath);
             driver = new FirefoxDriver();
         }
+    }
+
+    public static void quitDriver() throws IOException {
+        driver.quit();
     }
 }

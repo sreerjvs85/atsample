@@ -1,6 +1,6 @@
 package at.pages;
 
-import at.commonLibrary.WebelementFunctions;
+import at.commonLibrary.WebElementFunctions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -23,7 +23,7 @@ public class LandingPageObjects {
     WebElement lnkLogin;
 
     public LoginPageObjects clickLinkLogin() throws IOException {
-        WebelementFunctions.click(lnkLogin);
+        WebElementFunctions.click(lnkLogin);
         return new LoginPageObjects(driver);
     }
 

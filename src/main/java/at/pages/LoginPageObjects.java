@@ -1,6 +1,6 @@
 package at.pages;
 
-import at.commonLibrary.WebelementFunctions;
+import at.commonLibrary.WebElementFunctions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -31,15 +31,16 @@ public class LoginPageObjects {
     WebElement txtErrorMessage;
 
     public void setTxtUsername (String username) throws IOException {
-        WebelementFunctions.fillField(txtUsername, username);
+        WebElementFunctions.fillField(txtUsername, username);
     }
     public void setTxtPassword (String password) throws IOException {
-        WebelementFunctions.fillField(txtPassword,password);
+        WebElementFunctions.fillField(txtPassword,password);
     }
-    public void clickBtnSubmit() throws IOException {
-        WebelementFunctions.click(btnSubmit);
+    public MyATPageObjects clickBtnSubmit() throws IOException {
+        WebElementFunctions.click(btnSubmit);
+        return new MyATPageObjects(driver);
     }
     public String getTxtErrorMessage() throws IOException {
-       return WebelementFunctions.getMessage(txtErrorMessage);
+       return WebElementFunctions.getMessage(txtErrorMessage);
     }
 }
