@@ -1,7 +1,6 @@
 package stepDefinitions;
 
 import at.browserLibrary.BrowserFunctions;
-import at.commonLibrary.WebElementFunctions;
 import at.pages.LandingPageObjects;
 import at.pages.LoginPageObjects;
 import at.pages.MyATPageObjects;
@@ -20,7 +19,6 @@ public class LoginTest {
     WebDriver driver;
 
     String errorMessage;
-    boolean executionFlag;
 
     LoginPageObjects loginPageObjects;
     MyATPageObjects myATPageObjects;
@@ -28,7 +26,7 @@ public class LoginTest {
 
     @After
     public void tearDown() throws IOException {
-        if (!executionFlag) { WebElementFunctions.takesScreenshot(driver);}
+        myATPageObjects.clickLinkLogout();
         BrowserFunctions.quitDriver();
     }
 
@@ -55,8 +53,6 @@ public class LoginTest {
         if (myATPageObjects.getWelcomeMessage().equals("Hello Sreevathsan")) {
             String actualBalance = myATPageObjects.getMyAtBalance();
             Assert.assertEquals(actualBalance, expectedBalance);
-        } else {
-            executionFlag = false;
         }
     }
 
