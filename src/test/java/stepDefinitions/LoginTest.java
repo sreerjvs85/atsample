@@ -32,8 +32,9 @@ public class LoginTest {
 
     @Then("If i get error message, capture it.")
     public void ifIGetErrorMessageCaptureIt() throws IOException {
-
-        errorMessage = loginPageObjects.getTxtErrorMessage();
+        if (!myATPageObjects.getWelcomeMessage().equals("Hello Sreevathsan")) {
+            errorMessage = loginPageObjects.getTxtErrorMessage();
+        }
     }
 
     @When("I enter username {string}, password {string} and submit")
