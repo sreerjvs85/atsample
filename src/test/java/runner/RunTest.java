@@ -8,7 +8,8 @@ import io.cucumber.testng.CucumberOptions;
 @CucumberOptions(
         features = {"src/test/resources/features"},
         plugin = {"json:target/report.json"},
-        glue = {"stepDefinitions"}
+        glue = {"stepDefinitions"},
+        tags = "@New"
 )
 public class RunTest extends AbstractTestNGCucumberTests {
 

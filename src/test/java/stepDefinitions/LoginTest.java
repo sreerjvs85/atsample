@@ -68,5 +68,4 @@ public class LoginTest {
             String actualDestination = myTransactionsPageObjects.getStringDestination();
             Assert.assertEquals(actualDestination,expectedDestination);
     }
-
 }

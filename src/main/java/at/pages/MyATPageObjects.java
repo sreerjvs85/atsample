@@ -50,5 +50,4 @@ public class MyATPageObjects {
         WebElementFunctions.click(btnViewTransactions);
         return new MyTransactionsPageObjects(driver);
     }
-
 }
