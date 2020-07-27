@@ -1,5 +1,6 @@
 package at.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -26,44 +27,72 @@ public class MyTransactionsPageObjects {
 
     @FindAll
             (@FindBy(how = How.XPATH,using = "//div[@class='table-inner']/table"))
-    List<WebElement> tableTransactions;
-
-    @FindAll(
-            @FindBy(how = How.XPATH,using = "//div[@class='table-inner']/table[2]/tbody"))
-    List<WebElement> tableBodyElements;
-
-    @FindAll(
-            @FindBy(how = How.XPATH,using = "//div[@class='table-inner']/table[2]/tbody[2]/tr"))
-    List<WebElement> tableRowElements;
+    List<WebElement> listTableTransactions;
 
     @FindAll(
             @FindBy(how = How.XPATH,using = "//div[@class='table-inner']/table[2]/tbody[2]/tr[1]/td"))
     List<WebElement> tableColumnElements;
 
     public String getStringDestination() throws IOException {
+        printTransactionTable();
         return tableColumnElements.get(0).getAttribute("innerText");
     }
 
-    private int getTableTransactionsSize () {
-        return tableTransactions.size();
+    private int getTableTransactionsSize() {
+        return listTableTransactions.size();
     }
 
-    private HashMap<String, HashMap<String, HashMap<String ,HashMap<String, String>>>> TransactionTable() {
-        HashMap<String,String> TransTable = new HashMap<>();
-        HashMap<String,String> TransBody = new HashMap<>();
-        HashMap<String,String> TransRow = new HashMap<>();
-        HashMap<String,String> TransData = new HashMap<>();
+    private void printTransactionTable(){
+        for (int i=0;i<listTableTransactions.size();i++){
+            List<WebElement> tableBody = listTableTransactions.get(i).findElements(By.xpath(".//tbody"));
+//            System.out.println("Table Transactions: " + listTableTransactions.get(i).getText());
+            for (int j=0;j<tableBody.size();j++){
+                List<WebElement> tableRow = tableBody.get(j).findElements(By.xpath(".//tr"));
+//                System.out.println("Table Body: "+ tableBody.get(j).getText());
+                for (int k=0;k<tableRow.size();k++) {
+                    List<WebElement> tableColumn = tableRow.get(k).findElements(By.xpath(".//td"));
+                    HashMap<String, String> tableColumnKeys = new HashMap<>();
 
-        for (int i = 1;i<tableTransactions.size();i++) {
-            TransTable.put(i, TransBody);
-            for (int j = 0; j<tableBodyElements.size();j++) {
-                TransBody.put(tableTransactions.get(j).getAttribute("inner-text"), TransRow);
-                for (int k=0; k<tableRowElements.size();k++) {
-                    TransRow.put(tableRowElements.get(k).getAttribute("inner-text"), TransData);
-                    TransData.put("Transaction" ,tableColumnElements.get(l).getAttribute("inner-text"));
+                    for (int l = 0; l < tableColumn.size(); l++) {
+                        HashMap<String, String> tableColumnValues = new HashMap<>();
+                        if (tableColumn.size()==1){
+                            System.out.println("Transaction Date: " + tableColumn.get(l).getText());
+                            tableColumnKeys.put("Transaction Date", tableColumn.get(l).getText());
+                        } else {
+                            switch (l) {
+                                case 0:
+                                    System.out.println("Transaction: " + tableColumn.get(l).getText());
+                                    tableColumnValues.put("Transaction", tableColumn.get(l).getText());
+                                    break;
+                                case 1:
+                                    System.out.println("Journey ID: " + tableColumn.get(l).getText());
+                                    tableColumnValues.put("Journey ID", tableColumn.get(l).getText());
+                                    break;
+                                case 2:
+                                    System.out.println("Time: " + tableColumn.get(l).getText());
+                                    tableColumnValues.put("Time", tableColumn.get(l).getText());
+                                    break;
+                                case 3:
+                                    System.out.println("Credit: " + tableColumn.get(l).getText());
+                                    tableColumnValues.put("Credit", tableColumn.get(l).getText());
+                                    break;
+                                case 4:
+                                    System.out.println("Debit: " + tableColumn.get(l).getText());
+                                    tableColumnValues.put("Debit", tableColumn.get(l).getText());
+                                    break;
+                                case 5:
+                                    System.out.println("Action: " + tableColumn.get(l).getText());
+                                    tableColumnValues.put("Action", tableColumn.get(l).getText());
+                                    break;
+                                case 6:
+                                    System.out.println("HOP Balance: " + tableColumn.get(l).getText());
+                                    tableColumnValues.put("HOP Balance", tableColumn.get(l).getText());
+                                    break;
+                            }
+                        }
+                    }
                 }
             }
         }
     }
-
-}
+    }
