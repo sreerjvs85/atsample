@@ -45,54 +45,27 @@ public class MyTransactionsPageObjects {
     private void printTransactionTable(){
         for (int i=0;i<listTableTransactions.size();i++){
             List<WebElement> tableBody = listTableTransactions.get(i).findElements(By.xpath(".//tbody"));
-//            System.out.println("Table Transactions: " + listTableTransactions.get(i).getText());
             for (int j=0;j<tableBody.size();j++){
                 List<WebElement> tableRow = tableBody.get(j).findElements(By.xpath(".//tr"));
-//                System.out.println("Table Body: "+ tableBody.get(j).getText());
                 for (int k=0;k<tableRow.size();k++) {
                     List<WebElement> tableColumn = tableRow.get(k).findElements(By.xpath(".//td"));
                     HashMap<String, String> tableColumnKeys = new HashMap<>();
-
-                    for (int l = 0; l < tableColumn.size(); l++) {
-                        HashMap<String, String> tableColumnValues = new HashMap<>();
-                        if (tableColumn.size()==1){
-                            System.out.println("Transaction Date: " + tableColumn.get(l).getText());
-                            tableColumnKeys.put("Transaction Date", tableColumn.get(l).getText());
-                        } else {
-                            switch (l) {
-                                case 0:
-                                    System.out.println("Transaction: " + tableColumn.get(l).getText());
-                                    tableColumnValues.put("Transaction", tableColumn.get(l).getText());
-                                    break;
-                                case 1:
-                                    System.out.println("Journey ID: " + tableColumn.get(l).getText());
-                                    tableColumnValues.put("Journey ID", tableColumn.get(l).getText());
-                                    break;
-                                case 2:
-                                    System.out.println("Time: " + tableColumn.get(l).getText());
-                                    tableColumnValues.put("Time", tableColumn.get(l).getText());
-                                    break;
-                                case 3:
-                                    System.out.println("Credit: " + tableColumn.get(l).getText());
-                                    tableColumnValues.put("Credit", tableColumn.get(l).getText());
-                                    break;
-                                case 4:
-                                    System.out.println("Debit: " + tableColumn.get(l).getText());
-                                    tableColumnValues.put("Debit", tableColumn.get(l).getText());
-                                    break;
-                                case 5:
-                                    System.out.println("Action: " + tableColumn.get(l).getText());
-                                    tableColumnValues.put("Action", tableColumn.get(l).getText());
-                                    break;
-                                case 6:
-                                    System.out.println("HOP Balance: " + tableColumn.get(l).getText());
-                                    tableColumnValues.put("HOP Balance", tableColumn.get(l).getText());
-                                    break;
-                            }
-                        }
+                    HashMap<String, String> tableColumnValues = new HashMap<>();
+                    if (tableColumn.size()==0){
+                        break;
+                    }else if (tableColumn.size()==1){
+                        tableColumnKeys.put("Transaction Date", tableColumn.get(0).getText());
+                    } else {
+                        tableColumnValues.put("Transaction", tableColumn.get(0).getText());
+                        tableColumnValues.put("Journey ID", tableColumn.get(1).getText());
+                        tableColumnValues.put("Time", tableColumn.get(2).getText());
+                        tableColumnValues.put("Credit", tableColumn.get(3).getText());
+                        tableColumnValues.put("Debit", tableColumn.get(4).getText());
+                        tableColumnValues.put("Action", tableColumn.get(5).getText());
+                        tableColumnValues.put("HOP Balance", tableColumn.get(6).getText());
                     }
                 }
             }
         }
     }
-    }
+}
