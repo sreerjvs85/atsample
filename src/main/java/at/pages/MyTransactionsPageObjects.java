@@ -10,7 +10,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class MyTransactionsPageObjects {
@@ -49,12 +49,13 @@ public class MyTransactionsPageObjects {
                 List<WebElement> tableRow = tableBody.get(j).findElements(By.xpath(".//tr"));
                 for (int k=0;k<tableRow.size();k++) {
                     List<WebElement> tableColumn = tableRow.get(k).findElements(By.xpath(".//td"));
-                    HashMap<String, String> tableColumnKeys = new HashMap<>();
-                    HashMap<String, String> tableColumnValues = new HashMap<>();
+                    LinkedHashMap<String, String> tableColumnKeys = new LinkedHashMap<>();
+                    LinkedHashMap<String, String> tableColumnValues = new LinkedHashMap<>();
                     if (tableColumn.size()==0){
                         break;
                     }else if (tableColumn.size()==1){
                         tableColumnKeys.put("Transaction Date", tableColumn.get(0).getText());
+                        System.out.println(tableColumnKeys);
                     } else {
                         tableColumnValues.put("Transaction", tableColumn.get(0).getText());
                         tableColumnValues.put("Journey ID", tableColumn.get(1).getText());
@@ -63,6 +64,7 @@ public class MyTransactionsPageObjects {
                         tableColumnValues.put("Debit", tableColumn.get(4).getText());
                         tableColumnValues.put("Action", tableColumn.get(5).getText());
                         tableColumnValues.put("HOP Balance", tableColumn.get(6).getText());
+                        System.out.println(tableColumnValues);
                     }
                 }
             }
