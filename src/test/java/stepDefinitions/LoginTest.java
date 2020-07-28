@@ -64,7 +64,7 @@ public class LoginTest {
     }
 
     @And("Verify the last transaction's destination as {string}")
-    public void verifyTheLastTransactionSDestinationAs(String expectedDestination) throws IOException {
+    public void verifyTheLastTransactionSDestinationAs(String expectedDestination) throws IOException, IllegalAccessException {
             String actualDestination = myTransactionsPageObjects.getStringDestination();
             Assert.assertEquals(actualDestination,expectedDestination);
     }
