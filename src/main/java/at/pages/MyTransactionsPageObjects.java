@@ -9,7 +9,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 
-import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class MyTransactionsPageObjects {
 
     String tableKey = null;
     TableColumnRow tableColumnRow = new TableColumnRow();
-    LinkedHashMap<String, Object> tableColumnKeys = new LinkedHashMap<>();
+    LinkedHashMap<String, TableTransaction> tableColumnKeys = new LinkedHashMap<>();
 
     public MyTransactionsPageObjects(WebDriver driver) {
         this.driver = driver;
@@ -26,7 +26,7 @@ public class MyTransactionsPageObjects {
     }
 
     @FindAll
-            (@FindBy(how = How.XPATH,using = "//div[@class='table-inner']/table"))
+            (@FindBy(how = How.XPATH,using = "//table[@class='transactions-table ng-scope']"))
     List<WebElement> listTableTransactions;
 
     @FindAll(
@@ -34,11 +34,9 @@ public class MyTransactionsPageObjects {
     List<WebElement> tableColumnElements;
 
     public String getStringDestination() {
-        for (String key: printTransactionTable().keySet()){
+        for (String key: tableJourneyDetails().keySet()){
             System.out.println(key);
-            for (Object value: printTransactionTable().values()){
-
-            }
+            System.out.println(tableColumnKeys.get(key));
         }
         return tableColumnElements.get(0).getAttribute("innerText");
     }
@@ -47,101 +45,168 @@ public class MyTransactionsPageObjects {
         return listTableTransactions.size();
     }
 
-    public LinkedHashMap<String, Object> printTransactionTable(){
 
-        for (int i=0;i<listTableTransactions.size();i++){
-            List<WebElement> tableBody = listTableTransactions.get(i).findElements(By.xpath(".//tbody"));
-            for (int j=0;j<tableBody.size();j++){
-                List<WebElement> tableRow = tableBody.get(j).findElements(By.xpath(".//tr"));
-                for (int k=0;k<tableRow.size();k++) {
-                    List<WebElement> tableColumn = tableRow.get(k).findElements(By.xpath(".//td"));
-                    if (tableColumn.size()==0){
-                        break;
-                    }else if (tableColumn.size()==1){
-                        tableKey = tableColumn.get(0).getText();
-                        tableColumnKeys.put(tableKey, tableColumnRow);
-                    } else {
-                        String trans = tableColumn.get(0).getText();
-                        String  jID = tableColumn.get(1).getText();
-                        String time = tableColumn.get(2).getText();
-                        String credit = tableColumn.get(3).getText();
-                        String debit = tableColumn.get(4).getText();
-                        String action = tableColumn.get(5).getText();
-                        String hopBal = tableColumn.get(6).getText();
+    public LinkedHashMap<String, TableTransaction> tableJourneyDetails() {
+        for (WebElement element: listTableTransactions) {
+            List<WebElement> tBody = element.findElements(By.xpath(".//tbody"));
+            TableTransaction tableTransaction = null;
+            for (WebElement body: tBody) {
+                List<WebElement> tRow = body.findElements(By.xpath(".//tr"));
+                if (tRow.size()==1 && !tRow.get(0).getText().startsWith("Auto")) {
+                    tableTransaction = new TableTransaction();
+                    tableKey = tRow.get(0).getText();
+                    tableColumnKeys.put(tableKey, tableTransaction);
+                    tableTransaction.setDate(tableKey);
+                } else {
+                    for (WebElement data: tRow) {
+                        List<WebElement> tCol = data.findElements(By.xpath(".//td"));
+                        
+                        String transaction = tCol.get(0).getText();
+                        String journeyID = tCol.get(1).getText();
+                        String time = tCol.get(2).getText();
+                        String  credit = tCol.get(3).getText();
+                        String debit = tCol.get(4).getText();
+                        String action = tCol.get(5).getText();
+                        String hopBalance = tCol.get(6).getText();
 
-                        tableColumnRow = new TableColumnRow(trans, jID, time, credit, debit, action, hopBal);
-                        tableColumnKeys.replace(tableKey, tableColumnRow);
+                        tableColumnRow = new TableColumnRow(transaction, journeyID, time, credit, debit, action, hopBalance);
+                        tableTransaction.getTableColumnRows().add(tableColumnRow);
                     }
                 }
+                tableColumnKeys.replace(tableKey, tableTransaction);
             }
         }
         return tableColumnKeys;
     }
 
-    public static class TableColumnRow {
-        public String transaction;
-        public String  journeyID;
-        public String time;
-        public String credit;
-        public String debit;
-        public String action;
-        public String hopBalance;
+    public static class TableTransaction{
 
-        public TableColumnRow(String tran, String jID, String time, @Nullable String credit, @Nullable String debit, @Nullable String action, String hopBalance){
-            setTransaction(tran);
-            setJourneyID(jID);
-            setTime(time);
-            setCredit(credit);
-            setDebit(debit);
-            setAction(action);
-            setHopBalance(hopBalance);
+        public List<TableColumnRow> getTableColumnRows() {
+            return tableColumnRows;
         }
+
+        public void setTableColumnRows(List<TableColumnRow> tableColumnRows) {
+            this.tableColumnRows = tableColumnRows;
+        }
+
+        public TableTransaction() {
+        }
+
+        @Override
+        public String toString() {
+            return "TableTransaction{" +
+                    "date='" + date + '\'' +
+                    ", tableColumnRows=" + tableColumnRows +
+                    '}';
+        }
+
+        private String date;
+        private List<TableColumnRow> tableColumnRows= new ArrayList();
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+    }
+
+    public static class TableColumnRow {
+
+        @Override
+        public String toString() {
+            return "TableColumnRow{" +
+                    "transaction='" + transaction + '\'' +
+                    ", journeyID='" + journeyID + '\'' +
+                    ", time='" + time + '\'' +
+                    ", credit='" + credit + '\'' +
+                    ", debit='" + debit + '\'' +
+                    ", action='" + action + '\'' +
+                    ", hopBalance='" + hopBalance + '\'' +
+                    '}';
+        }
+
+        private String transaction;
+        private String journeyID;
+        private String time;
+        private String credit;
+        private String debit;
+        private String action;
+        private String hopBalance;
+
+        public TableColumnRow(String transaction, String journeyID, String time, String credit, String debit, String action, String hopBalance) {
+            this.transaction = transaction;
+            this.journeyID = journeyID;
+            this.time = time;
+            this.credit = credit;
+            this.debit = debit;
+            this.action = action;
+            this.hopBalance = hopBalance;
+        }
+
 
         public TableColumnRow() {
 
         }
-        public String getTransaction(){
+
+        public String getTransaction() {
             return transaction;
         }
-        public void setTransaction(String tran){
-            transaction=tran;
+
+        public void setTransaction(String transaction) {
+            this.transaction = transaction;
         }
+
         public String getJourneyID() {
             return journeyID;
         }
-        public void setJourneyID(String jID){
-            journeyID=jID;
+
+        public void setJourneyID(String journeyID) {
+            this.journeyID = journeyID;
         }
+
         public String getTime() {
             return time;
         }
-        public void setTime(String time){
-            this.time=time;
+
+        public void setTime(String time) {
+            this.time = time;
         }
+
         public String getCredit() {
             return credit;
         }
+
         public void setCredit(String credit) {
             this.credit = credit;
         }
+
         public String getDebit() {
             return debit;
         }
-        public void setDebit(String debit){
-            this.debit=debit;
+
+        public void setDebit(String debit) {
+            this.debit = debit;
         }
+
         public String getAction() {
             return action;
         }
+
         public void setAction(String action) {
-            this.action=action;
+            this.action = action;
         }
+
         public String getHopBalance() {
             return hopBalance;
         }
-        public void setHopBalance(String hopBalance){
-            this.hopBalance=hopBalance;
+
+        public void setHopBalance(String hopBalance) {
+            this.hopBalance = hopBalance;
         }
+
 
     }
 
