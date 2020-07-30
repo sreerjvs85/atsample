@@ -1,5 +1,6 @@
 package at.pages;
 
+import at.commonLibrary.WebElementFunctions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,6 +10,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -33,11 +35,16 @@ public class MyTransactionsPageObjects {
             @FindBy(how = How.XPATH,using = "//div[@class='table-inner']/table[2]/tbody[2]/tr[1]/td"))
     List<WebElement> tableColumnElements;
 
-    public String getStringDestination() {
+    @FindAll(
+            @FindBy(how = How.XPATH, using = "//div[@class='transactions-tools']/pagination/div/div[@class='page ng-scope']"))
+    List<WebElement> linkTransactionHistoryPages;
+
+    public String getStringDestination() throws IOException {
         for (String key: tableJourneyDetails().keySet()){
             System.out.println(key);
             System.out.println(tableColumnKeys.get(key));
         }
+//        tableJourneyDetails();
         return tableColumnElements.get(0).getAttribute("innerText");
     }
 
@@ -46,34 +53,42 @@ public class MyTransactionsPageObjects {
     }
 
 
-    public LinkedHashMap<String, TableTransaction> tableJourneyDetails() {
-        for (WebElement element: listTableTransactions) {
-            List<WebElement> tBody = element.findElements(By.xpath(".//tbody"));
-            TableTransaction tableTransaction = null;
-            for (WebElement body: tBody) {
-                List<WebElement> tRow = body.findElements(By.xpath(".//tr"));
-                if (tRow.size()==1 && !tRow.get(0).getText().startsWith("Auto")) {
-                    tableTransaction = new TableTransaction();
-                    tableKey = tRow.get(0).getText();
-                    tableColumnKeys.put(tableKey, tableTransaction);
-                    tableTransaction.setDate(tableKey);
-                } else {
-                    for (WebElement data: tRow) {
-                        List<WebElement> tCol = data.findElements(By.xpath(".//td"));
-                        
-                        String transaction = tCol.get(0).getText();
-                        String journeyID = tCol.get(1).getText();
-                        String time = tCol.get(2).getText();
-                        String  credit = tCol.get(3).getText();
-                        String debit = tCol.get(4).getText();
-                        String action = tCol.get(5).getText();
-                        String hopBalance = tCol.get(6).getText();
+    public LinkedHashMap<String, TableTransaction> tableJourneyDetails() throws IOException {
+        for (int pageCount = 0; pageCount <= linkTransactionHistoryPages.size(); pageCount++) {
+            for (WebElement element : listTableTransactions) {
+                List<WebElement> tBody = element.findElements(By.xpath(".//tbody"));
+                TableTransaction tableTransaction = null;
+                for (WebElement body : tBody) {
+                    List<WebElement> tRow = body.findElements(By.xpath(".//tr"));
+                    if (tRow.size() == 1 && !tRow.get(0).getText().startsWith("Auto")) {
+                        tableTransaction = new TableTransaction();
+                        tableKey = tRow.get(0).getText();
+                        tableColumnKeys.put(tableKey, tableTransaction);
+                        tableTransaction.setDate(tableKey);
+                    } else {
+                        for (WebElement data : tRow) {
+                            List<WebElement> tCol = data.findElements(By.xpath(".//td"));
 
-                        tableColumnRow = new TableColumnRow(transaction, journeyID, time, credit, debit, action, hopBalance);
-                        tableTransaction.getTableColumnRows().add(tableColumnRow);
+                            String transaction = tCol.get(0).getText();
+                            String journeyID = tCol.get(1).getText();
+                            String time = tCol.get(2).getText();
+                            String credit = tCol.get(3).getText();
+                            String debit = tCol.get(4).getText();
+                            String action = tCol.get(5).getText();
+                            String hopBalance = tCol.get(6).getText();
+
+                            tableColumnRow = new TableColumnRow(transaction, journeyID, time, credit, debit, action, hopBalance);
+                            if (tableColumnKeys.containsKey(tableKey)) {
+                                tableTransaction = tableColumnKeys.get(tableKey);
+                            }
+                            tableTransaction.getTableColumnRows().add(tableColumnRow);
+                        }
                     }
+                    tableColumnKeys.replace(tableKey, tableTransaction);
                 }
-                tableColumnKeys.replace(tableKey, tableTransaction);
+            }
+            if (pageCount< linkTransactionHistoryPages.size()) {
+                WebElementFunctions.click(linkTransactionHistoryPages.get(pageCount));
             }
         }
         return tableColumnKeys;
