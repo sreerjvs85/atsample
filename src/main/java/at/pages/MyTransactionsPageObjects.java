@@ -44,7 +44,6 @@ public class MyTransactionsPageObjects {
             System.out.println(key);
             System.out.println(tableColumnKeys.get(key));
         }
-//        tableJourneyDetails();
         return tableColumnElements.get(0).getAttribute("innerText");
     }
 
@@ -57,13 +56,11 @@ public class MyTransactionsPageObjects {
         for (int pageCount = 0; pageCount <= linkTransactionHistoryPages.size(); pageCount++) {
             for (WebElement element : listTableTransactions) {
                 List<WebElement> tBody = element.findElements(By.xpath(".//tbody"));
-                TableTransaction tableTransaction = null;
+                TableTransaction tableTransaction = new TableTransaction();
                 for (WebElement body : tBody) {
                     List<WebElement> tRow = body.findElements(By.xpath(".//tr"));
                     if (tRow.size() == 1 && !tRow.get(0).getText().startsWith("Auto")) {
-                        tableTransaction = new TableTransaction();
                         tableKey = tRow.get(0).getText();
-                        tableColumnKeys.put(tableKey, tableTransaction);
                         tableTransaction.setDate(tableKey);
                     } else {
                         for (WebElement data : tRow) {
@@ -84,12 +81,10 @@ public class MyTransactionsPageObjects {
                             tableTransaction.getTableColumnRows().add(tableColumnRow);
                         }
                     }
-                    tableColumnKeys.replace(tableKey, tableTransaction);
                 }
+                tableColumnKeys.put(tableKey, tableTransaction);
             }
-            if (pageCount< linkTransactionHistoryPages.size()) {
-                WebElementFunctions.click(linkTransactionHistoryPages.get(pageCount));
-            }
+            WebElementFunctions.click(linkTransactionHistoryPages.get(pageCount));
         }
         return tableColumnKeys;
     }
