@@ -84,8 +84,11 @@ public class MyTransactionsPageObjects {
                 }
                 tableColumnKeys.put(tableKey, tableTransaction);
             }
-            WebElementFunctions.click(linkTransactionHistoryPages.get(pageCount));
+            if (pageCount<linkTransactionHistoryPages.size()) {
+                WebElementFunctions.click(linkTransactionHistoryPages.get(pageCount));
+            }
         }
+        WebElementFunctions.click(linkTransactionHistoryPages.get(0));
         return tableColumnKeys;
     }
 
