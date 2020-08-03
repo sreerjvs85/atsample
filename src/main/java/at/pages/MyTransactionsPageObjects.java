@@ -40,10 +40,13 @@ public class MyTransactionsPageObjects {
     List<WebElement> linkTransactionHistoryPages;
 
     public String getStringDestination() throws IOException {
-        for (String key: tableJourneyDetails().keySet()){
-            System.out.println(key);
-            System.out.println(tableColumnKeys.get(key));
-        }
+//        System.out.println("Start : " + new Date().toString());
+//        for (String key: tableJourneyDetails().keySet()){
+//            System.out.println(key);
+//            System.out.println(tableColumnKeys.get(key));
+//        }
+//        tableJourneyDetails();
+//        System.out.println("Stop : " + new Date().toString());
         return tableColumnElements.get(0).getAttribute("innerText");
     }
 
@@ -94,16 +97,8 @@ public class MyTransactionsPageObjects {
 
     public static class TableTransaction{
 
-        public List<TableColumnRow> getTableColumnRows() {
-            return tableColumnRows;
-        }
-
-        public void setTableColumnRows(List<TableColumnRow> tableColumnRows) {
-            this.tableColumnRows = tableColumnRows;
-        }
-
-        public TableTransaction() {
-        }
+        private String date;
+        private List<TableColumnRow> tableColumnRows= new ArrayList();
 
         @Override
         public String toString() {
@@ -113,8 +108,12 @@ public class MyTransactionsPageObjects {
                     '}';
         }
 
-        private String date;
-        private List<TableColumnRow> tableColumnRows= new ArrayList();
+        public TableTransaction() {
+        }
+
+        public void setTableColumnRows(List<TableColumnRow> tableColumnRows) {
+            this.tableColumnRows = tableColumnRows;
+        }
 
         public String getDate() {
             return date;
@@ -122,6 +121,10 @@ public class MyTransactionsPageObjects {
 
         public void setDate(String date) {
             this.date = date;
+        }
+
+        public List<TableColumnRow> getTableColumnRows() {
+            return tableColumnRows;
         }
 
     }
@@ -219,7 +222,6 @@ public class MyTransactionsPageObjects {
         public void setHopBalance(String hopBalance) {
             this.hopBalance = hopBalance;
         }
-
 
     }
 

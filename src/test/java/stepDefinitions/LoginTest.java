@@ -6,6 +6,7 @@ import at.pages.LoginPageObjects;
 import at.pages.MyATPageObjects;
 import at.pages.MyTransactionsPageObjects;
 import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -14,6 +15,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class LoginTest {
     WebDriver driver;
@@ -24,10 +26,16 @@ public class LoginTest {
     MyATPageObjects myATPageObjects;
     MyTransactionsPageObjects myTransactionsPageObjects;
 
+    @Before
+    public void timerStart() throws IOException {
+        System.out.println("TC Start: " + new Date());
+    }
+
     @After
     public void tearDown() throws IOException {
         myATPageObjects.clickLinkLogout();
         BrowserFunctions.quitDriver();
+        System.out.println("TC Stop: " + new Date());
     }
 
     @Then("If i get error message, capture it.")

@@ -33,6 +33,9 @@ public class MyATPageObjects {
     @FindBy(how = How.ID, using = "default-hop-balance-remaining")
     WebElement txtDefaultAtBalance;
 
+    @FindBy(how = How.LINK_TEXT, using = "View all cards")
+    WebElement btnViewAllCards;
+
     public String getWelcomeMessage() throws IOException {
         return WebElementFunctions.getMessage(txtWelcomeMessage);
     }
@@ -50,4 +53,9 @@ public class MyATPageObjects {
         WebElementFunctions.click(btnViewTransactions);
         return new MyTransactionsPageObjects(driver);
     }
+    public ViewAllCardsPageObjects clickBtnViewAllCards() throws IOException {
+        WebElementFunctions.click(btnViewAllCards);
+        return new ViewAllCardsPageObjects(driver);
+    }
+
 }
