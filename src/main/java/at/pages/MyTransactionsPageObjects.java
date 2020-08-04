@@ -12,6 +12,7 @@ import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -40,13 +41,13 @@ public class MyTransactionsPageObjects {
     List<WebElement> linkTransactionHistoryPages;
 
     public String getStringDestination() throws IOException {
-//        System.out.println("Start : " + new Date().toString());
-//        for (String key: tableJourneyDetails().keySet()){
-//            System.out.println(key);
-//            System.out.println(tableColumnKeys.get(key));
-//        }
+        System.out.println("Start : " + new Date().toString());
+        for (String key: tableJourneyDetails().keySet()){
+            System.out.println(key);
+            System.out.println(tableColumnKeys.get(key));
+        }
 //        tableJourneyDetails();
-//        System.out.println("Stop : " + new Date().toString());
+        System.out.println("Stop : " + new Date().toString());
         return tableColumnElements.get(0).getAttribute("innerText");
     }
 
@@ -64,6 +65,7 @@ public class MyTransactionsPageObjects {
                     List<WebElement> tRow = body.findElements(By.xpath(".//tr"));
                     if (tRow.size() == 1 && !tRow.get(0).getText().startsWith("Auto")) {
                         tableKey = tRow.get(0).getText();
+//                        Assert valid date format if not valid, send failure message
                         tableTransaction.setDate(tableKey);
                     } else {
                         for (WebElement data : tRow) {
