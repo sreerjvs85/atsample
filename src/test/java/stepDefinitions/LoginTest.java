@@ -80,8 +80,8 @@ public class LoginTest {
         Assert.assertEquals(actualDestination,expectedDestination);
     }
 
-    @And("Verify the {string} transaction details like tagon, tagoff and hop balance")
-    public void verifyTheTransactionDetailsLikeTagonTagoffAndHopBalance(String arg0) {
+    @And("Verify the {string} transaction details like tag on, tag off and hop balance")
+    public void verifyTheTransactionDetailsLikeTagOnTagOffAndHopBalance(String arg0) {
         String[] transaction = myTransactionsPageObjects.TargettedTransactions(arg0);
         double hopBalance = 0, previousBalace = 0, debit = 0, credit = 0;
         String destination = null, source = null, journeyDate = null;

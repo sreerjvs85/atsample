@@ -28,11 +28,8 @@ Feature: Login to at and capture error message for failure
     Given I'm on login screen of at using "chrome"
     When I enter username "sreerjvs@gmail.com", password "R@vijaya7" and submit
     Then I click on View Transactions button to see all my previous travels
-    And Verify the "<transaction>" transaction details like tagon, tagoff and hop balance
+    And Verify the "<transaction>" transaction details like tag on, tag off and hop balance
     Examples:
       | transaction |
       | first       |
       | second      |
-      | third       |
-      | fourth      |
-      | fifth       |
