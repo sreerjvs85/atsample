@@ -30,7 +30,7 @@ public class LoginTest {
     MyTransactionsPageObjects myTransactionsPageObjects;
 
     @Before
-    public void timerStart() throws IOException {
+    public void timerStart(){
         System.out.println("TC Start: " + new Date());
     }
 
@@ -75,7 +75,7 @@ public class LoginTest {
     }
 
     @And("Verify the last transaction's destination as {string}")
-    public void verifyTheLastTransactionSDestinationAs(String expectedDestination) throws IOException, IllegalAccessException {
+    public void verifyTheLastTransactionSDestinationAs(String expectedDestination) {
         actualDestination = myTransactionsPageObjects.getStringDestination();
         Assert.assertEquals(actualDestination,expectedDestination);
     }
@@ -86,6 +86,8 @@ public class LoginTest {
         double hopBalance = 0, previousBalace = 0, debit = 0, credit = 0;
         String destination = null, source = null, journeyDate = null;
         int totalJourneys = 0;
+        int destStartIndex = 10, destEndIndex = 25, srcStartIndex = 9, srcEndIndexRef = 34, srcEndIndex = 19,
+                autoStartIndex = 14, autoEndIndex = 22;
 
         for (String str: transaction) {
            int index = str.lastIndexOf("$");
@@ -96,20 +98,20 @@ public class LoginTest {
                hopBalance = Double.parseDouble(str.substring(index+1));
                index = str.indexOf("$");
                debit = Double.parseDouble(str.substring(index+1, str.lastIndexOf("$")-1));
-               destination = str.substring(10,str.length()-25);
+               destination = str.substring(destStartIndex,str.length()-destEndIndex);
            }
            if (index >0 && str.startsWith("Tag on")) {
                if (str.contains("refund")) {
-                   source = str.substring(9, str.length() - 34);
+                   source = str.substring(srcStartIndex, str.length() - srcEndIndexRef);
                } else {
-                   source = str.substring(9, str.length() - 19);
+                   source = str.substring(srcStartIndex, str.length() - srcEndIndex);
                }
                previousBalace = Double.parseDouble(str.substring(index + 1));
                totalJourneys++;
                Assert.assertEquals(hopBalance, Precision.round((previousBalace - debit),2));
            }
            if (str.startsWith("Auto")) {
-               source = destination = str.substring(14, str.length()-22);
+               source = destination = str.substring(autoStartIndex, str.length()-autoEndIndex);
                hopBalance = Double.parseDouble(str.substring(index+1));
                index = str.indexOf("$");
                credit = Double.parseDouble(str.substring(index+1, str.lastIndexOf("$")-1));
@@ -124,6 +126,8 @@ public class LoginTest {
                        + " Source: " + source
                        + " Destination: " + destination
                        + " Total journeys: " + totalJourneys);
+               source=destination=null;
+               debit=credit=0;
            }
         }
     }

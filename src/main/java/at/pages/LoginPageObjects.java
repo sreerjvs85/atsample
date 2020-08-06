@@ -11,7 +11,7 @@ import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 import java.io.IOException;
 
 public class LoginPageObjects {
-    public WebDriver driver;
+    public final WebDriver driver;
 
     public LoginPageObjects(WebDriver driver) {
         this.driver = driver;

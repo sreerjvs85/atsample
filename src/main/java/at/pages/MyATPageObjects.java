@@ -11,7 +11,7 @@ import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 import java.io.IOException;
 
 public class MyATPageObjects {
-    WebDriver driver;
+    final WebDriver driver;
 
     public MyATPageObjects(WebDriver driver){
         this.driver = driver;

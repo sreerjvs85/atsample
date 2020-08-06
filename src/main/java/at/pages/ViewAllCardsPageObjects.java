@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ViewAllCardsPageObjects {
 
-    WebDriver driver;
+    public final WebDriver driver;
 
     public ViewAllCardsPageObjects(WebDriver driver) {
         this.driver = driver;

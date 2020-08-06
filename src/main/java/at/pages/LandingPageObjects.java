@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class LandingPageObjects {
 
-    public WebDriver driver;
+    public final WebDriver driver;
 
     public LandingPageObjects (WebDriver driver) {
         this.driver = driver;

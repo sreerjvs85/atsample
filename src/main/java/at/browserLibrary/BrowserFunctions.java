@@ -4,8 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import java.io.IOException;
-
 public class BrowserFunctions {
 
     public static WebDriver driver;
@@ -14,7 +12,7 @@ public class BrowserFunctions {
     public static WebDriver getDriver(String browser, String URL) {
         lBrowser = browser;
         setlBrowser(lBrowser);
-        driver.manage().window().fullscreen();
+        driver.manage().window().maximize();
         driver.get(URL);
         return driver;
     }
@@ -53,7 +51,7 @@ public class BrowserFunctions {
         }
     }
 
-    public static void quitDriver() throws IOException {
+    public static void quitDriver(){
         driver.quit();
     }
 }
