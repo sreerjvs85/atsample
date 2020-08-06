@@ -12,7 +12,6 @@ import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -41,13 +40,14 @@ public class MyTransactionsPageObjects {
     List<WebElement> linkTransactionHistoryPages;
 
     public String getStringDestination() throws IOException {
-        System.out.println("Start : " + new Date().toString());
-        for (String key: tableJourneyDetails().keySet()){
-            System.out.println(key);
-            System.out.println(tableColumnKeys.get(key));
-        }
-//        tableJourneyDetails();
-        System.out.println("Stop : " + new Date().toString());
+//        System.out.println("Start : " + new Date().toString());
+//        for (String key: tableJourneyDetails().keySet()){
+//            System.out.println(key);
+//            System.out.println(tableColumnKeys.get(key));
+//        }
+////        tableJourneyDetails();
+//        System.out.println("Stop : " + new Date().toString());
+//        tableColumnElements.get(0).findElements(By.xpath("//table[@class='transactions-table ng-scope'][1]//tr")).get(1).getText()
         return tableColumnElements.get(0).getAttribute("innerText");
     }
 
@@ -55,6 +55,33 @@ public class MyTransactionsPageObjects {
         return listTableTransactions.size();
     }
 
+    private String[] Transactions(WebElement element) {
+        String[] transactions = null;
+        transactions = element.getText().split("\n");
+        return transactions;
+    }
+
+    public String[] TargettedTransactions(String arg0) {
+        String[] targetStringList = null;
+        switch (arg0.toLowerCase()) {
+            case "first":
+                targetStringList = Transactions(listTableTransactions.get(0));
+                break;
+            case "second":
+                targetStringList = Transactions(listTableTransactions.get(1));
+                break;
+            case "third":
+                targetStringList = Transactions(listTableTransactions.get(2));
+                break;
+            case "fourth":
+                targetStringList = Transactions(listTableTransactions.get(3));
+                break;
+            case "fifth":
+                targetStringList = Transactions(listTableTransactions.get(4));
+                break;
+        }
+        return targetStringList;
+    }
 
     public LinkedHashMap<String, TableTransaction> tableJourneyDetails() throws IOException {
         for (int pageCount = 0; pageCount <= linkTransactionHistoryPages.size(); pageCount++) {
@@ -65,7 +92,6 @@ public class MyTransactionsPageObjects {
                     List<WebElement> tRow = body.findElements(By.xpath(".//tr"));
                     if (tRow.size() == 1 && !tRow.get(0).getText().startsWith("Auto")) {
                         tableKey = tRow.get(0).getText();
-//                        Assert valid date format if not valid, send failure message
                         tableTransaction.setDate(tableKey);
                     } else {
                         for (WebElement data : tRow) {

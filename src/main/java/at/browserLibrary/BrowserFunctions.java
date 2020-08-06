@@ -10,9 +10,6 @@ public class BrowserFunctions {
 
     public static WebDriver driver;
     private static String lBrowser;
-    private static String osName = System.getProperty("os.name");
-    private static String chromePath = "chromedriver";
-    private static String firefoxPath = "geckodriver";
 
     public static WebDriver getDriver(String browser, String URL) {
         lBrowser = browser;
@@ -24,23 +21,30 @@ public class BrowserFunctions {
 
     private static void setlBrowser (String browser) {
         lBrowser = browser;
-        if (lBrowser.contains("chrome")) {
-            System.setProperty("webdriver.chrome.driver", driverPath()+chromePath);
+        driverPath(lBrowser);
+        if (lBrowser.toLowerCase().contains("chrome")) {
             driver = new ChromeDriver();
-        } else if (lBrowser.contains("firefox")) {
-            System.setProperty("webdriver.gecko.driver", driverPath()+firefoxPath);
+        } else if (lBrowser.toLowerCase().contains("firefox")) {
             driver = new FirefoxDriver();
         }
     }
 
-    private static String driverPath() {
+    private static void driverPath(String browser) {
         String driverPath = "src/test/resources/";
-        if (osName.toLowerCase().contains("mac")) {
-            driverPath = driverPath+"mac/";
-        } else {
-            driverPath = driverPath+"windows/";
+        String osName = System.getProperty("os.name");
+        if (osName.toLowerCase().contains("mac") && browser.toLowerCase().contains("chrome")) {
+            driverPath = driverPath+"mac/chromedriver";
+            System.setProperty("webdriver.chrome.driver", driverPath);
+        } else if (osName.toLowerCase().contains("windows") && browser.toLowerCase().contains("chrome")){
+            driverPath = driverPath+"windows/chromedriver.exe";
+            System.setProperty("webdriver.chrome.driver", driverPath);
+        } else if (osName.toLowerCase().contains("mac") && browser.toLowerCase().contains("firefox")){
+            driverPath = driverPath+"mac/geckodriver";
+            System.setProperty("webdriver.gecko.driver", driverPath);
+        } else if (osName.toLowerCase().contains("windows") && browser.toLowerCase().contains("firefox")) {
+            driverPath = driverPath+"windows/geckodriver.exe";
+            System.setProperty("webdriver.gecko.driver", driverPath);
         }
-        return driverPath;
     }
 
     public static void quitDriver() throws IOException {

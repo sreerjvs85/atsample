@@ -11,6 +11,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.apache.commons.math3.util.Precision;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
@@ -21,6 +22,8 @@ public class LoginTest {
     WebDriver driver;
 
     String errorMessage;
+    String actualBalance;
+    String actualDestination;
 
     LoginPageObjects loginPageObjects;
     MyATPageObjects myATPageObjects;
@@ -61,7 +64,7 @@ public class LoginTest {
     @Then("I should be able to see my login and check {string} balance")
     public void iShouldBeAbleToSeeMyLoginAndCheckBalance(String expectedBalance) throws IOException {
         if (myATPageObjects.getWelcomeMessage().equals("Hello Sreevathsan")) {
-            String actualBalance = myATPageObjects.getMyAtBalance();
+            actualBalance = myATPageObjects.getMyAtBalance();
             Assert.assertEquals(actualBalance, expectedBalance);
         }
     }
@@ -73,7 +76,56 @@ public class LoginTest {
 
     @And("Verify the last transaction's destination as {string}")
     public void verifyTheLastTransactionSDestinationAs(String expectedDestination) throws IOException, IllegalAccessException {
-            String actualDestination = myTransactionsPageObjects.getStringDestination();
-            Assert.assertEquals(actualDestination,expectedDestination);
+        actualDestination = myTransactionsPageObjects.getStringDestination();
+        Assert.assertEquals(actualDestination,expectedDestination);
+    }
+
+    @And("Verify the {string} transaction details like tagon, tagoff and hop balance")
+    public void verifyTheTransactionDetailsLikeTagonTagoffAndHopBalance(String arg0) {
+        String[] transaction = myTransactionsPageObjects.TargettedTransactions(arg0);
+        double hopBalance = 0, previousBalace = 0, debit = 0, credit = 0;
+        String destination = null, source = null, journeyDate = null;
+        int totalJourneys = 0;
+
+        for (String str: transaction) {
+           int index = str.lastIndexOf("$");
+           if (index<0 && !str.startsWith("Tag")) {
+               journeyDate = str;
+           }
+           if (index>0 && str.startsWith("Tag off")) {
+               hopBalance = Double.parseDouble(str.substring(index+1));
+               index = str.indexOf("$");
+               debit = Double.parseDouble(str.substring(index+1, str.lastIndexOf("$")-1));
+               destination = str.substring(10,str.length()-25);
+           }
+           if (index >0 && str.startsWith("Tag on")) {
+               if (str.contains("refund")) {
+                   source = str.substring(9, str.length() - 34);
+               } else {
+                   source = str.substring(9, str.length() - 19);
+               }
+               previousBalace = Double.parseDouble(str.substring(index + 1));
+               totalJourneys++;
+               Assert.assertEquals(hopBalance, Precision.round((previousBalace - debit),2));
+           }
+           if (str.startsWith("Auto")) {
+               source = destination = str.substring(14, str.length()-22);
+               hopBalance = Double.parseDouble(str.substring(index+1));
+               index = str.indexOf("$");
+               credit = Double.parseDouble(str.substring(index+1, str.lastIndexOf("$")-1));
+               Assert.assertEquals(hopBalance, previousBalace);
+           }
+           if (source!= null && destination!= null) {
+               System.out.println("Journey date: " + journeyDate
+                       + " Hop Balance: " + hopBalance
+                       + " Debit: " + debit
+                       + " Credit: " + credit
+                       + " Previous Balance: " + previousBalace
+                       + " Source: " + source
+                       + " Destination: " + destination
+                       + " Total journeys: " + totalJourneys);
+           }
+           destination=null;
+        }
     }
 }
