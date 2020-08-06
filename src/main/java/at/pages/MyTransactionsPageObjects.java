@@ -1,5 +1,6 @@
 package at.pages;
 
+import at.commonLibrary.WebElementFunctions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -8,6 +9,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 
+import java.io.IOException;
 import java.util.List;
 
 public class MyTransactionsPageObjects {
@@ -26,17 +28,24 @@ public class MyTransactionsPageObjects {
             @FindBy(how = How.XPATH,using = "//div[@class='table-inner']/table[2]/tbody[2]/tr[1]/td"))
     List<WebElement> tableColumnElements;
 
+    @FindBy(how = How.XPATH, using = "//pagination[@class='hidden-small-dwn ng-isolate-scope']/div[@class='pagination']/div[@class='page ng-scope current-page']")
+    WebElement txtCurrentPage;
+
+    @FindAll(
+            @FindBy(how = How.XPATH, using = "//pagination[@class='hidden-small-dwn ng-isolate-scope']/div[@class='pagination']/div[@class='page ng-scope']"))
+    List<WebElement> linkNextPages;
+
     public String getStringDestination(){
         return tableColumnElements.get(0).getAttribute("innerText");
     }
 
-    private String[] Transactions(WebElement element) {
+    private String[] transactions(WebElement element) {
         String[] transactions;
         transactions = element.getText().split("\n");
         return transactions;
     }
 
-    public String[] TargettedTransactions(String arg0) {
+    public String[] targettedTransactions(String arg0) {
         String[] targetStringList;
         int index = 0;
         switch (arg0.toLowerCase()) {
@@ -56,7 +65,22 @@ public class MyTransactionsPageObjects {
                 index = 4;
                 break;
         }
-        targetStringList = Transactions(listTableTransactions.get(index));
+        targetStringList = transactions(listTableTransactions.get(index));
         return targetStringList;
+    }
+
+    private String getTxtCurrentPage() throws IOException {
+        return WebElementFunctions.getMessage(txtCurrentPage);
+    }
+
+    public void navigateToPage(String page) throws IOException {
+        int pageNumber = Integer.parseInt(page.substring(page.length()-1));
+        for (WebElement element: linkNextPages) {
+            String nextPageNumber;
+            nextPageNumber = element.getText();
+            if (nextPageNumber.equals(page.substring(page.length()-1))){
+                WebElementFunctions.click(element);
+            }
+        }
     }
 }

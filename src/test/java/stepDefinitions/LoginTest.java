@@ -6,7 +6,6 @@ import at.pages.LoginPageObjects;
 import at.pages.MyATPageObjects;
 import at.pages.MyTransactionsPageObjects;
 import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -28,11 +27,6 @@ public class LoginTest {
     LoginPageObjects loginPageObjects;
     MyATPageObjects myATPageObjects;
     MyTransactionsPageObjects myTransactionsPageObjects;
-
-    @Before
-    public void timerStart(){
-        System.out.println("TC Start: " + new Date());
-    }
 
     @After
     public void tearDown() throws IOException {
@@ -57,6 +51,7 @@ public class LoginTest {
 
     @Given("I'm on login screen of at using {string}")
     public void iMOnLoginScreenOfAtUsing(String browser) throws IOException {
+        System.out.println("TC Start: " + new Date());
         driver = BrowserFunctions.getDriver(browser, "https://at.govt.nz/");
         loginPageObjects = new LandingPageObjects(driver).clickLinkLogin();
     }
@@ -80,16 +75,16 @@ public class LoginTest {
         Assert.assertEquals(actualDestination,expectedDestination);
     }
 
-    @And("Verify the {string} transaction details like tag on, tag off and hop balance")
-    public void verifyTheTransactionDetailsLikeTagOnTagOffAndHopBalance(String arg0) {
-        String[] transaction = myTransactionsPageObjects.TargettedTransactions(arg0);
-        double hopBalance = 0, previousBalace = 0, debit = 0, credit = 0;
+    @And("Verify the {string} details like tag on, tag off and hop balance")
+    public void verifyTheDetailsLikeTagOnTagOffAndHopBalance(String transaction) {
+        String[] transactions = myTransactionsPageObjects.targettedTransactions(transaction);
+        double hopBalance = 0, previousBalance = 0, debit = 0, credit = 0;
         String destination = null, source = null, journeyDate = null;
         int totalJourneys = 0;
         int destStartIndex = 10, destEndIndex = 25, srcStartIndex = 9, srcEndIndexRef = 34, srcEndIndex = 19,
                 autoStartIndex = 14, autoEndIndex = 22;
 
-        for (String str: transaction) {
+        for (String str: transactions) {
            int index = str.lastIndexOf("$");
            if (index<0 && !str.startsWith("Tag")) {
                journeyDate = str;
@@ -106,23 +101,23 @@ public class LoginTest {
                } else {
                    source = str.substring(srcStartIndex, str.length() - srcEndIndex);
                }
-               previousBalace = Double.parseDouble(str.substring(index + 1));
+               previousBalance = Double.parseDouble(str.substring(index + 1));
                totalJourneys++;
-               Assert.assertEquals(hopBalance, Precision.round((previousBalace - debit),2));
+               Assert.assertEquals(hopBalance, Precision.round((previousBalance - debit),2));
            }
            if (str.startsWith("Auto")) {
                source = destination = str.substring(autoStartIndex, str.length()-autoEndIndex);
                hopBalance = Double.parseDouble(str.substring(index+1));
                index = str.indexOf("$");
                credit = Double.parseDouble(str.substring(index+1, str.lastIndexOf("$")-1));
-               Assert.assertEquals(hopBalance, previousBalace);
+               Assert.assertEquals(hopBalance, previousBalance);
            }
            if (source!= null && destination!= null) {
                System.out.println("Journey date: " + journeyDate
                        + " Hop Balance: " + hopBalance
                        + " Debit: " + debit
                        + " Credit: " + credit
-                       + " Previous Balance: " + previousBalace
+                       + " Previous Balance: " + previousBalance
                        + " Source: " + source
                        + " Destination: " + destination
                        + " Total journeys: " + totalJourneys);
@@ -130,5 +125,11 @@ public class LoginTest {
                debit=credit=0;
            }
         }
+    }
+
+    @And("Verify the {string} details like tag on, tag off and hop balance on {string}")
+    public void verifyTheDetailsLikeTagOnTagOffAndHopBalanceOn(String transaction, String page) throws IOException {
+        myTransactionsPageObjects.navigateToPage(page);
+        verifyTheDetailsLikeTagOnTagOffAndHopBalance(transaction);
     }
 }
