@@ -14,7 +14,7 @@ public class BrowserFunctions {
     public static WebDriver getDriver(String browser, String URL) {
         lBrowser = browser;
         setlBrowser(lBrowser);
-        driver.manage().window().maximize();
+        driver.manage().window().fullscreen();
         driver.get(URL);
         return driver;
     }
@@ -38,11 +38,17 @@ public class BrowserFunctions {
         } else if (osName.toLowerCase().contains("windows") && browser.toLowerCase().contains("chrome")){
             driverPath = driverPath+"windows/chromedriver.exe";
             System.setProperty("webdriver.chrome.driver", driverPath);
-        } else if (osName.toLowerCase().contains("mac") && browser.toLowerCase().contains("firefox")){
+        }  else if (osName.toLowerCase().contains("mac") && browser.toLowerCase().contains("firefox")){
             driverPath = driverPath+"mac/geckodriver";
             System.setProperty("webdriver.gecko.driver", driverPath);
         } else if (osName.toLowerCase().contains("windows") && browser.toLowerCase().contains("firefox")) {
             driverPath = driverPath+"windows/geckodriver.exe";
+            System.setProperty("webdriver.gecko.driver", driverPath);
+        } else if (osName.toLowerCase().contains("linux") && browser.toLowerCase().contains("chrome")) {
+            driverPath = driverPath+"linux/chromedriver";
+            System.setProperty("webdriver.chrome.driver", driverPath);
+        } else {
+            driverPath = driverPath+"linux/geckodriver";
             System.setProperty("webdriver.gecko.driver", driverPath);
         }
     }
