@@ -125,7 +125,6 @@ public class LoginTest {
                        + " Destination: " + destination
                        + " Total journeys: " + totalJourneys);
            }
-           destination=null;
         }
     }
 }

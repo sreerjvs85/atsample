@@ -63,23 +63,25 @@ public class MyTransactionsPageObjects {
 
     public String[] TargettedTransactions(String arg0) {
         String[] targetStringList = null;
+        int index = 0;
         switch (arg0.toLowerCase()) {
             case "first":
-                targetStringList = Transactions(listTableTransactions.get(0));
+                index = 0;
                 break;
             case "second":
-                targetStringList = Transactions(listTableTransactions.get(1));
+                index = 1;
                 break;
             case "third":
-                targetStringList = Transactions(listTableTransactions.get(2));
+                index = 2;
                 break;
             case "fourth":
-                targetStringList = Transactions(listTableTransactions.get(3));
+                index = 3;
                 break;
             case "fifth":
-                targetStringList = Transactions(listTableTransactions.get(4));
+                index = 4;
                 break;
         }
+        targetStringList = Transactions(listTableTransactions.get(index));
         return targetStringList;
     }
 
