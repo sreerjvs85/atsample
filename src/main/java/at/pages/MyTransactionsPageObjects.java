@@ -28,9 +28,6 @@ public class MyTransactionsPageObjects {
             @FindBy(how = How.XPATH,using = "//div[@class='table-inner']/table[2]/tbody[2]/tr[1]/td"))
     List<WebElement> tableColumnElements;
 
-    @FindBy(how = How.XPATH, using = "//pagination[@class='hidden-small-dwn ng-isolate-scope']/div[@class='pagination']/div[@class='page ng-scope current-page']")
-    WebElement txtCurrentPage;
-
     @FindAll(
             @FindBy(how = How.XPATH, using = "//pagination[@class='hidden-small-dwn ng-isolate-scope']/div[@class='pagination']/div[@class='page ng-scope']"))
     List<WebElement> linkNextPages;
@@ -45,10 +42,10 @@ public class MyTransactionsPageObjects {
         return transactions;
     }
 
-    public String[] targettedTransactions(String arg0) {
+    public String[] targettedTransactions(String transaction) {
         String[] targetStringList;
         int index = 0;
-        switch (arg0.toLowerCase()) {
+        switch (transaction.toLowerCase()) {
             case "first":
                 index = 0;
                 break;
@@ -69,12 +66,7 @@ public class MyTransactionsPageObjects {
         return targetStringList;
     }
 
-    private String getTxtCurrentPage() throws IOException {
-        return WebElementFunctions.getMessage(txtCurrentPage);
-    }
-
     public void navigateToPage(String page) throws IOException {
-        int pageNumber = Integer.parseInt(page.substring(page.length()-1));
         for (WebElement element: linkNextPages) {
             String nextPageNumber;
             nextPageNumber = element.getText();
