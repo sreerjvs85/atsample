@@ -46,17 +46,5 @@ Feature: Login to at and capture error message for failure
     Examples:
       | transaction | pages |
       | first       | page1 |
-      | second      | page1 |
-      | third       | page1 |
-      | fourth      | page1 |
-      | fifth       | page1 |
-      | first       | page2 |
       | second      | page2 |
-      | third       | page2 |
-      | fourth      | page2 |
-      | fifth       | page2 |
-      | first       | page3 |
-      | second      | page3 |
       | third       | page3 |
-      | fourth      | page3 |
-      | fifth       | page3 |
