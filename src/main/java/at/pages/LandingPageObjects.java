@@ -16,7 +16,7 @@ public class LandingPageObjects {
 
     public LandingPageObjects (WebDriver driver) {
         this.driver = driver;
-        PageFactory.initElements(new AjaxElementLocatorFactory(driver, 30), this);
+        PageFactory.initElements(new AjaxElementLocatorFactory(driver, 15), this);
     }
 
     @FindBy (how = How.LINK_TEXT, using = "Log in")

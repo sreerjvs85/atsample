@@ -1,5 +1,5 @@
 Feature: Login to at and capture error message for failure
-  @Reg
+  @New
   Scenario Outline: Login to at and capture error message for failure
     Given I'm on login screen of at using "<browser>"
     When I enter username "<user>", password "<pass>" and submit
@@ -37,7 +37,7 @@ Feature: Login to at and capture error message for failure
       | fourth      |
       | fifth       |
 
-  @New
+  @Reg
   Scenario Outline: Login to at in chrome browser with valid login credentials to check the transactions
     Given I'm on login screen of at using "chrome"
     When I enter username "sreerjvs@gmail.com", password "R@vijaya7" and submit

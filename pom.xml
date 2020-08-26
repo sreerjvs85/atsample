@@ -3,13 +3,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>at</groupId>
-    <artifactId>sample</artifactId>
+    <artifactId>atsample</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+
+        <cucumber.report.json.location>${project.build.directory}/cucumber-report</cucumber.report.json.location>
+        <generated.report.location>${project.build.directory}/test-report</generated.report.location>
     </properties>
 
     <dependencies>
@@ -109,7 +112,6 @@
             <artifactId>commons-math3</artifactId>
             <version>3.6.1</version>
         </dependency>
-
     </dependencies>
     <build>
         <plugins>
@@ -128,8 +130,25 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.0</version>
                 <configuration>
-                    <parallel>classes</parallel>
-                    <threadCount>4</threadCount>
+                    <testFailureIgnore>true</testFailureIgnore>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.trivago.rta</groupId>
+                <artifactId>cluecumber-report-plugin</artifactId>
+                <version>2.5.0</version>
+                <executions>
+                    <execution>
+                        <id>report</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>reporting</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <sourceJsonReportDirectory>${cucumber.report.json.location}</sourceJsonReportDirectory>
+                    <generatedHtmlReportDirectory>${generated.report.location}</generatedHtmlReportDirectory>
                 </configuration>
             </plugin>
         </plugins>

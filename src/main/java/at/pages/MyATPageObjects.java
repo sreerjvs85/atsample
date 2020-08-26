@@ -15,7 +15,7 @@ public class MyATPageObjects {
 
     public MyATPageObjects(WebDriver driver){
         this.driver = driver;
-        PageFactory.initElements(new AjaxElementLocatorFactory(driver,30),this);
+        PageFactory.initElements(new AjaxElementLocatorFactory(driver,15),this);
     }
 
     @FindBy (how = How.XPATH, using = "//span[@class='default-hop-balance']")

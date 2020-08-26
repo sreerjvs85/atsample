@@ -15,7 +15,7 @@ public class LoginPageObjects {
 
     public LoginPageObjects(WebDriver driver) {
         this.driver = driver;
-        PageFactory.initElements(new AjaxElementLocatorFactory(driver, 30), this);
+        PageFactory.initElements(new AjaxElementLocatorFactory(driver, 15), this);
     }
 
     @FindBy (how = How.ID, using = "userNameInput")
@@ -40,7 +40,7 @@ public class LoginPageObjects {
         WebElementFunctions.click(btnSubmit);
         return new MyATPageObjects(driver);
     }
-    public String getTxtErrorMessage() throws IOException {
-       return WebElementFunctions.getMessage(txtErrorMessage);
+    public boolean getTxtErrorMessage() throws IOException {
+       return WebElementFunctions.isWebelementPresent(txtErrorMessage);
     }
 }
